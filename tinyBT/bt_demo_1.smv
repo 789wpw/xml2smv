@@ -1,0 +1,78 @@
+MODULE main 
+VAR
+	tick:{1,2,3}; 
+	status:{idle,success,failure};
+	state:{sta_init,succeed,failed,tick2,tick3}; 
+	s2:low_power(tick);
+	s3:unfold_panels(tick);
+ASSIGN
+	init(status) := idle;
+	init(state) := sta_init;
+	init(tick) := 1;
+	next(state) :=
+		case
+			status = sta_init: tick2;
+			status = tick2 & s2.status = success : tick3;
+			status = tick2 & s2.status = failure : failed;
+			status = tick3 & s3.status = success : succeed;
+			status = tick3 & s3.status = failure : failed;
+			state = failed : sta_init; 
+			state = succeed : sta_init; 
+			TRUE:state;
+		esac;
+	next(status) := 
+		case
+			state = succeed : success; 
+			state = failed : failure; 
+			TRUE:idle;
+		esac;
+	next(tick):=
+		case
+			status=tick2 : 2;
+			status=tick3 : 3;
+			TRUE:tick;
+		esac;
+
+MODULE low_power(tick)
+VAR 
+    condition: boolean;
+    status: {idle, success, failure};
+
+ASSIGN
+    init(condition) := {TRUE, FALSE};
+    init(status) := idle;
+
+    next(condition) :=
+        case
+            tick = 2:  {TRUE, FALSE};
+            TRUE: condition;
+        esac;
+    next(status) := 
+        case 
+            tick=2 & condition = TRUE : success;
+            tick=2 & condition = FALSE : failure;
+            TRUE: status;
+        esac;
+
+MODULE unfold_panels(tick)
+VAR 
+    completed: boolean;
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := FALSE;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=3: {TRUE, FALSE};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=3 & completed = TRUE : success;
+            tick=3 & completed = FALSE : failure;
+            TRUE: status;
+        esac;
+
+

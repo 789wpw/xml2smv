@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<root name="Depth">   
+    <Sequence class="SequenceNode" name="root_node">
+        <Fallback class="FallbackNode" name="fallback_node">
+            <Sequence class="SequenceNode" name="return_sequence_node">
+                <Condition class="ConditionEgr" name="condition_egr" />
+                <Action class="ActionEgr" name="action_Egr"/>
+            </Sequence>
+            <Sequence class="SequenceNode" name="exercise_sequence_node">
+                <Fallback class="FallbackNode" name="asmb_fallback_node">
+                    <Condition class="ConditionAsmb" name="condition_asmb"/>
+                    <Action class="ActionAsmb" name="action_asmb" />
+                </Fallback>
+                <Fallback class="FallbackNode" name="closeup_fallback_node">
+                    <Condition class="ConditionApp" name="condition_app"/>
+                    <Action class="ActionApp" name="action_app" />
+                </Fallback>
+                <Sequence class="SequenceNode" name="k-c_sequence_node">
+                    <Fallback class="FallbackNode" name="fd_fallback_node">
+                        <Condition class="ConditionFd" name="condition_fd"/>
+                        <Action class="ActionFd" name="action_fd"/>
+                    </Fallback>
+                    <Fallback class="FallbackNode" name="fx_fallback_node">
+                        <Condition class="ConditionFx" name="condition_fx"/>
+                        <Action class="ActionFx" name="action_fx" />
+                    </Fallback>
+                    <Fallback class="FallbackNode" name="tra_fallback_node">
+                        <Condition class="ConditionTra" name="condition_tra"/>
+                        <Action class="ActionTra" name="action_tra"/>
+                    </Fallback> 
+                    <Fallback class="FallbackNode" name="tar_fallback_node">
+                        <Condition class="ConditionTar" name="condition_tar"/>
+                        <Action class="ActionTar" name="action_tar"/>
+                    </Fallback>
+                    <Parallel class="ParallelNode" name="eng_ass">
+                        <Fallback class="FallbackNode" name="eng_fallback_node">
+                            <Condition class="ConditionEng" name="condition_eng"/>
+                            <Action class="ActionEng" name="action_eng"/>
+                        </Fallback>
+                        <Fallback class="FallbackNode" name="eng_ass_fallback_node">
+                            <Condition class="ConditionAss" name="condition_ass"/>
+                            <Action class="ActionAss" name="action_ass"/>
+                        </Fallback>
+                    </Parallel>
+                    <Fallback class="FallbackNode" name="end_fallback_node">
+                        <Condition class="ConditionEnd" name="condition_end"/>
+                        <Action class="ActionEnd" name="action_end"/>
+                    </Fallback>
+                </Sequence>
+            </Sequence>
+        </Fallback>
+        <Action class="ActionInit" name="action_init"/>
+    </Sequence>
+</root>

@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<root name="Depth">
+     <BehaviorTree ID="MainTree" name="maintree">
+        <Fallback name="root_fallback">
+            <Sequence name="sequences_1">
+                <Condition ID="lowpower"    name="low_power"/>
+                <Action ID="unfoldpanels"   name="unfold_panels"/>
+            </Sequence>
+            <Sequence name="sequences_2">
+                <Condition ID="storm"    name="in_storm"/>
+                <Action ID="hibernate"   name="in_hibernate"/>
+            </Sequence>
+            <Sequence name="sequences_3">
+                <Action ID="getdata"    name="get_data"/>
+                <Action ID="send"   name="send_data"/>
+            </Sequence>
+        </Fallback>
+    </BehaviorTree>
+</root>

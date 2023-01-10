@@ -1,0 +1,19 @@
+
+cmake_minimum_required(VERSION 3.15)
+project(tinyxml2-test)
+
+enable_testing()
+
+find_package(tinyxml2 REQUIRED)
+include_directories(./include)
+
+# if(BOOST_FOUND)
+#     include_directories(${Boost_INCLUDE_DIRS})
+    
+#     MESSAGE( STATUS "Boost_INCLUDE_DIRS = ${Boost_INCLUDE_DIRS}.")
+#     MESSAGE( STATUS "Boost_LIBRARIES = ${Boost_LIBRARIES}.")
+#     MESSAGE( STATUS "Boost_LIB_VERSION = ${Boost_LIB_VERSION}.")
+# endif()  
+
+add_executable(xmltest src/xmltest.cpp)
+target_link_libraries(xmltest PUBLIC tinyxml2::tinyxml2)

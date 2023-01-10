@@ -1,0 +1,274 @@
+MODULE main 
+VAR
+	tick:{1,2,3,4,5,6,7,8,9,10};
+	status:{idle,success,failure};
+	state:{sta_init,succeed,failed,tick2,tick5,tick8}; 
+	s2:sequences_1(tick);
+	s5:sequences_2(tick);
+	s8:sequences_3(tick);
+ASSIGN
+	init(status) := idle;
+	init(state) := sta_init;
+	init(tick) := 1;
+	next(state) :=
+		case
+			state = sta_init: tick2;
+			state = tick2 & s2.status = failure : tick5;
+			state = tick2 & s2.status = success :succeed;
+			state = tick5 & s5.status = failure : tick8;
+			state = tick5 & s5.status = success :succeed;
+			state = tick8 & s8.status = failure : failed;
+			state = tick8 & s8.status = success :succeed;
+			state = failed :sta_init; 
+			state = succeed :sta_init; 
+			TRUE:state;
+		esac;
+	next(status) := 
+		case
+			state = succeed : success; 
+			state = failed : failure; 
+			TRUE:idle;
+		esac;
+	next(tick):=
+		case
+			state = tick2 : 2;
+			state = tick5 : 5;
+			state = tick8 : 8;
+			TRUE:tick;
+		esac;
+
+MODULE sequences_1(para_tick)
+VAR
+
+	status:{idle,success,failure};
+	state:{sta_init,succeed,failed,tick3,tick4}; 
+	s3:low_power(tick);
+	s4:unfold_panels(tick);
+ASSIGN
+	init(status) := idle;
+	init(state) := sta_init;
+	init(tick) := 2;
+	next(state) :=
+		case
+			state =  sta_init: tick3;
+			state =  tick3 & s3.status = success : tick4;
+			state =  tick3 & s3.status = failure : failed;
+			state =  tick4 & s4.status = success : succeed;
+			state =  tick4 & s4.status = failure : failed;
+			state = failed : sta_init; 
+			state = succeed : sta_init; 
+			TRUE:state;
+		esac;
+	next(status) := 
+		case
+			state = succeed : success; 
+			state = failed : failure; 
+			TRUE:idle;
+		esac;
+	next(tick):=
+		case
+			state = tick3 : 3;
+			state = tick4 : 4;
+			TRUE:tick;
+		esac;
+
+MODULE low_power(tick)
+VAR 
+    condition: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(condition) := initial;
+    init(status) := idle;
+
+    next(condition) :=
+        case
+            tick = 3 & condition = initial : {success, failure};
+            TRUE: condition;
+        esac;
+    next(status) := 
+        case 
+            tick=3 & condition = success : success;
+            tick=3 & condition = failure : failure;
+            TRUE: status;
+        esac;
+
+MODULE unfold_panels(tick)
+VAR 
+    completed: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := initial;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=4 & completed = initial: {success, failure};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=4 & completed = success : success;
+            tick=4 & completed = failure : failure;
+            TRUE: status;
+        esac;
+
+
+MODULE sequences_2(para_tick)
+VAR
+
+	status:{idle,success,failure};
+	state:{sta_init,succeed,failed,tick6,tick7}; 
+	s6:in_storm(tick);
+	s7:in_hibernate(tick);
+ASSIGN
+	init(status) := idle;
+	init(state) := sta_init;
+	init(tick) := 5;
+	next(state) :=
+		case
+			state =  sta_init: tick6;
+			state =  tick6 & s6.status = success : tick7;
+			state =  tick6 & s6.status = failure : failed;
+			state =  tick7 & s7.status = success : succeed;
+			state =  tick7 & s7.status = failure : failed;
+			state = failed : sta_init; 
+			state = succeed : sta_init; 
+			TRUE:state;
+		esac;
+	next(status) := 
+		case
+			state = succeed : success; 
+			state = failed : failure; 
+			TRUE:idle;
+		esac;
+	next(tick):=
+		case
+			state = tick6 : 6;
+			state = tick7 : 7;
+			TRUE:tick;
+		esac;
+
+MODULE in_storm(tick)
+VAR 
+    condition: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(condition) := initial;
+    init(status) := idle;
+
+    next(condition) :=
+        case
+            tick = 6 & condition = initial : {success, failure};
+            TRUE: condition;
+        esac;
+    next(status) := 
+        case 
+            tick=6 & condition = success : success;
+            tick=6 & condition = failure : failure;
+            TRUE: status;
+        esac;
+
+MODULE in_hibernate(tick)
+VAR 
+    completed: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := initial;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=7 & completed = initial: {success, failure};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=7 & completed = success : success;
+            tick=7 & completed = failure : failure;
+            TRUE: status;
+        esac;
+
+
+MODULE sequences_3(para_tick)
+VAR
+
+	status:{idle,success,failure};
+	state:{sta_init,succeed,failed,tick9,tick10}; 
+	s9:get_data(tick);
+	s10:send_data(tick);
+ASSIGN
+	init(status) := idle;
+	init(state) := sta_init;
+	init(tick) := 8;
+	next(state) :=
+		case
+			state =  sta_init: tick9;
+			state =  tick9 & s9.status = success : tick10;
+			state =  tick9 & s9.status = failure : failed;
+			state =  tick10 & s10.status = success : succeed;
+			state =  tick10 & s10.status = failure : failed;
+			state = failed : sta_init; 
+			state = succeed : sta_init; 
+			TRUE:state;
+		esac;
+	next(status) := 
+		case
+			state = succeed : success; 
+			state = failed : failure; 
+			TRUE:idle;
+		esac;
+	next(tick):=
+		case
+			state = tick9 : 9;
+			state = tick10 : 10;
+			TRUE:tick;
+		esac;
+
+MODULE get_data(tick)
+VAR 
+    completed: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := initial;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=9 & completed = initial: {success, failure};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=9 & completed = success : success;
+            tick=9 & completed = failure : failure;
+            TRUE: status;
+        esac;
+
+
+MODULE send_data(tick)
+VAR 
+    completed: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := initial;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=10 & completed = initial: {success, failure};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=10 & completed = success : success;
+            tick=10 & completed = failure : failure;
+            TRUE: status;
+        esac;
+
+

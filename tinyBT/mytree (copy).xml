@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<root name="Depth">
+     <BehaviorTree ID="MainTree" name="maintree">
+        <Fallback name="root_fallback">
+            <Condition ID="precondition"    name="pre_condition"/>
+            <Sequence name="sequence_1">
+                <Sequence name="sub_sequence_1">
+                    <Condition ID="condition_subseq1"    name="condition_sub_seq_1"/>
+                    <Action ID="action_subseq1"   name="action_sub_seq_1"/>
+                </Sequence>
+                <Condition ID="lowpower"    name="low_power"/>
+                <Action ID="unfoldpanels"   name="unfold_panels"/>
+            </Sequence>
+            <Sequence name="sequence_2">
+                <Condition ID="storm"      name="storm"/>
+                <Action name="hibemate"/>
+            </Sequence>
+            <Sequence name="sequence_3">
+                <Condition ID="getdata"    name="get_data"/>
+                <Action ID="sent"          name="sent"/>
+            </Sequence>
+        </Fallback>
+     </BehaviorTree>
+</root>

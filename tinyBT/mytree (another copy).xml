@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<root name="Depth">
+     <BehaviorTree ID="MainTree" name="maintree">
+        <Sequence name="sequences_1">
+            <Condition ID="lowpower"    name="low_power"/>
+            <Action ID="unfoldpanels"   name="unfold_panels"/>
+        </Sequence>
+    </BehaviorTree>
+</root>

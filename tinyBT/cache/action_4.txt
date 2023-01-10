@@ -1,0 +1,20 @@
+VAR 
+    completed: {initial, success, failure};
+    status: {idle, success, failure};
+
+ASSIGN
+    init(completed) := initial;
+    init(status):= idle;
+
+    next(completed) := 
+        case
+            tick=4 & completed = initial: {success, failure};
+            TRUE: completed;
+        esac;
+    next(status) := 
+        case 
+            tick=4 & completed = success : success;
+            tick=4 & completed = failure : failure;
+            TRUE: status;
+        esac;
+
